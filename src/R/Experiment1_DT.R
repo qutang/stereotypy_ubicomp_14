@@ -25,7 +25,7 @@ Experiment1_DT = function(session_folder, subjs){
     print(paste("Evaluating", subj))
     # Run for baseline feature set
     subj_baseline_dataset = load_one_subject_dataset(session_folder, subj, study_type, feature_type="baseline", label_type, exclude_sessions=exclude)
-    print(summary(subj_baseline_dataset))
+#     print(summary(subj_baseline_dataset))
     subj_baseline_result = stereotypy_loso_validation(subj_baseline_dataset)
     # Generate metric dataframe and export to csv
     result_filename = paste("baseline",paste("study", study_type, sep=""), experiment_time, "csv", sep=".")

@@ -1,4 +1,4 @@
-load_one_subject_dataset = function(session_folder, subj, study_type, feature_type, label_type, exclude_sessions){
+load_one_subject_dataset = function(session_folder, subj, study_type, feature_type, label_type, exclude_sessions, combine=FALSE){
   require("foreach")
   # Specify the filename pattern for the chosen subject
   if(study_type == 1){
@@ -21,6 +21,9 @@ load_one_subject_dataset = function(session_folder, subj, study_type, feature_ty
       stop(paste("Can't find the cached dataset, please check the data folder of session:", basename(session)))
     }
     return(single_dataset)
+  }
+  if(combine==TRUE){
+    subj_dataset = do.call(rbind, subj_dataset)
   }
   print("loaded")
   return(subj_dataset)

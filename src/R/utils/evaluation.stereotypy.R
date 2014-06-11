@@ -29,7 +29,8 @@ stereotypy_cross_validation = function(data, model_type="J48", nfold=10, iter=1,
         # randomize data
 
         if(rand){
-            fold_data = fold_data[sample(size_data),]
+            perm = sample(size_data)
+            fold_data = fold_data[perm,]
         }
         fold_predict = foreach(n=nfolds) %do% {
             # index for testing
@@ -62,7 +63,7 @@ stereotypy_cross_validation = function(data, model_type="J48", nfold=10, iter=1,
         print(table(fold_test))
         
         fold_stats = confusionMatrix(fold_predict, fold_test)
-        fold_result = list(fold_predict=as.character(fold_predict), fold_test=as.character(fold_test),fold_stats=fold_stats)
+        fold_result = list(fold_predict=as.character(fold_predict), fold_test=as.character(fold_test),fold_stats=fold_stats, fold_perm=perm)
         return(fold_result)
     }
     print("concating...")
@@ -71,11 +72,16 @@ stereotypy_cross_validation = function(data, model_type="J48", nfold=10, iter=1,
         return(result$fold_predict)
     }
     two_class_overall_predict = overall_predict
-    
-    
     overall_test = foreach(result=overall_result, .combine='c') %do% {
         return(result$fold_test)
     }
+
+    # prepare prediction dataframe
+    prediction_df = foreach(result=overall_result, .combine='list') %do% {
+        result = data.frame(PERMUTATION=result$fold_perm, PREDICTION=result$fold_predict, TRUTH=result$fold_test)
+        return(result)
+    }
+
     two_class_overall_test =overall_test
     l = union(unique(overall_test), unique(overall_predict))
     overall_test = factor(overall_test, levels = l)
@@ -114,7 +120,13 @@ stereotypy_cross_validation = function(data, model_type="J48", nfold=10, iter=1,
     
     # 
 
-    output_result = list(two_class_overall_stats = two_class_overall_stats, per_class_overall_stats=per_class_overall_stats, per_class_average_overall_stats= per_class_average_overall_stats, customized_metrics = customized_metrics, fold_stats = fold_stats, sample_proportion = sample_proportion)
+    output_result = list(two_class_overall_stats = two_class_overall_stats, 
+                         per_class_overall_stats=per_class_overall_stats, 
+                         per_class_average_overall_stats= per_class_average_overall_stats, 
+                         customized_metrics = customized_metrics, 
+                         fold_stats = fold_stats, 
+                         sample_proportion = sample_proportion,
+                         prediction_df = prediction_df)
     return(output_result)
 }
 
