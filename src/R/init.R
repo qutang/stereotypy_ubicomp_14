@@ -27,7 +27,7 @@ check_required_libraries <- function (package1, ...)  {
   } 
 }
 
-check_required_libraries("SOAR", "colorspace", "foreach", "R.matlab", "plyr", "caret", "sampling", "e1071", "rChoiceDialogs")
+check_required_libraries("SOAR", "colorspace", "foreach", "R.matlab", "plyr", "caret", "sampling", "e1071", "rJava", "rChoiceDialogs", "XML", "RWeka")
 
 ### Constants ====
 source("src/R/constants.R")

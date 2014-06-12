@@ -1,4 +1,4 @@
-load_one_subject_dataset = function(session_folder, subj, study_type, feature_type, label_type, exclude_sessions, combine=FALSE){
+load_one_subject_dataset = function(session_folder, subj, study_type, feature_type, label_type, exclude_sessions){
   require("foreach")
   # Specify the filename pattern for the chosen subject
   if(study_type == 1){
@@ -22,9 +22,8 @@ load_one_subject_dataset = function(session_folder, subj, study_type, feature_ty
     }
     return(single_dataset)
   }
-  if(combine==TRUE){
-    subj_dataset = do.call(rbind, subj_dataset)
-  }
+  
   print("loaded")
+  subj_dataset = list(subj_dataset = subj_dataset, subj_sessions = as.vector(subj_sessions))
   return(subj_dataset)
 }
