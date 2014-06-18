@@ -1,4 +1,4 @@
 % Replace with your own path before running any scripts
-rootPath = '/Qu/Projects/mhealth/StereotypyDetection/UBICOMP2014_EXPERIMENTS';
+rootPath = 'C:\Users\Qu\Projects\mHealthLab\stereotypy-public-dataset\';
 % set up path
 addpath(genpath([rootPath, filesep, 'src', filesep, 'MATLAB']));
