@@ -1,13 +1,10 @@
-# Experement 1 Decision Tree version: Trained using participant-dependent data and offline 
-# annotations from the classroom. Tested using leave-one-session-out.
-
 Experiment1_DT = function(session_folder, subjs){
   study_type = ifelse(test=grepl(pattern="1", x=basename(session_folder),perl=TRUE), yes=1, no=2)
   annotator = "Annotator1Stereotypy"
   label_type = "offline"
   result_folder = file.path(getwd(), "results", "DT", "experiment1")
   dir.create(result_folder,recursive=TRUE, showWarnings=FALSE)
-    
+  
   #Specify sessions to be excluded because of the bad 
   exclude = list.files(path=session_folder, pattern="nothing", full.names=TRUE, ignore.case=TRUE, include.dirs=TRUE)
   
@@ -31,7 +28,7 @@ Experiment1_DT = function(session_folder, subjs){
     result_filename = paste("baseline",paste("study", study_type, sep=""), experiment_time, "csv", sep=".")
     generate_metrics(filename=file.path(result_folder,result_filename), result=subj_baseline_result, metric_type=2, row_name=subj_counter)
     print(paste("baseline feature set evaluation is done"))
-
+    
     # Run for stockwell feature set
     subj_stockwell_dataset = load_one_subject_dataset(session_folder, subj, study_type, feature_type="stockwell", label_type, exclude_sessions=exclude)
     subj_stockwell_result = stereotypy_loso_validation(subj_stockwell_dataset)
@@ -49,16 +46,3 @@ Experiment1_DT = function(session_folder, subjs){
     print(paste("combined feature set evaluation is done"))
   } 
 }
-
-### ==========================================================
-# Note that due to memory issue, 
-# please run each study seperately by restarting R session in between 
-# to refresh the memory if you have less than 16GB memory
-
-source("src/R/constants.R")
-# For study 1
-# Experiment1_DT(session_folder=study1_folder, subjs=subj_study)
-
-# # For study 2
-Experiment1_DT(session_folder=study2_folder, subjs=subj_study)
-
