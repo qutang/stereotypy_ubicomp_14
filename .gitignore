@@ -2,3 +2,7 @@
 .Rproj.user
 .RData
 .Rhistory
+
+data/**/*.mat
+
+test/
